@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 import { withRouter } from "react-router";
 //import { Redirect } from 'react-router';
 
-import './requestConsent.css'
 
 class AllocateRoomsPage extends Component{
 

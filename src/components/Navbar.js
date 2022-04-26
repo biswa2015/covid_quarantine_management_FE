@@ -14,7 +14,7 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-let cookie = getCookie("patient_cookie"); 
+let cookie = getCookie("admin_cookie"); 
 if(cookie!=null){
   isLoggedIn = true;
   //alert("cookie there");
