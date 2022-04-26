@@ -3,11 +3,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import ReactTable from "react-table-6";  
 import "react-table-6/react-table.css" 
-import viewEHR from './viewEHR.js';
 import {Link} from "react-router-dom";
 import { Redirect } from 'react-router';
 import { NavLink } from 'react-bootstrap';
-import './grantedConsents.css'
+
 
 class FreeRoomsPage extends Component {
     constructor(props){
