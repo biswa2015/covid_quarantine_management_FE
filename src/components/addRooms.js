@@ -38,13 +38,14 @@ class AddRoomsPage extends Component {
       console.log(this.state);
       event.preventDefault();
       // const token = this.getCookie('admin_cookie');
-      // const headers = { 
-      //     'Authorization': `Bearer ${token}` 
-      // };
+      const headers = {
+        'Access-Control-Allow-Origin':'*' 
+        //'Authorization': `Bearer ${token}` 
+       };
 
       
       
-      axios.post('http://localhost:8095/add-room', this.state)
+      axios.post('http://cqcmp-app8:8095/add-room', this.state)
       .then(response => 
         {
           if(response.status==200){
