@@ -33,7 +33,7 @@ class AdminLoginPage extends Component {
     };
     
     
-    axios.post('http://cqcmp-app8:8095/admin-login', this.state, { headers })
+    axios.post('http://localhost:8102/admin-login', this.state, { headers })
     .then(response => 
       {
         if(response.status!=200){
