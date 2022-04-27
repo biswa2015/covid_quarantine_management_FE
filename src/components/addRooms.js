@@ -24,24 +24,25 @@ class AddRoomsPage extends Component {
   }
 
 
-  // getCookie(cName) {
-  //   const name = cName + "=";
-  //   const cDecoded = decodeURIComponent(document.cookie); //to be careful
-  //   const cArr = cDecoded .split('; ');
-  //   let res;
-  //   cArr.forEach(val => {
-  //       if (val.indexOf(name) === 0) res = val.substring(name.length);
-  //   })
-  //   return res;
-  // }
+   getCookie(cName) {
+     const name = cName + "=";
+     const cDecoded = decodeURIComponent(document.cookie); //to be careful
+     const cArr = cDecoded .split('; ');
+     let res;
+     cArr.forEach(val => {
+         if (val.indexOf(name) === 0) res = val.substring(name.length);
+     })
+     return res;
+   }
 
   submitAddRooms(event){
+      const token=this.getCookie('admin_cookie');
       console.log(this.state);
       event.preventDefault();
       // const token = this.getCookie('admin_cookie');
       const headers = {
-        'Access-Control-Allow-Origin':'*' 
-        //'Authorization': `Bearer ${token}` 
+        //'Access-Control-Allow-Origin':'*' 
+        'Authorization': `Bearer ${token}` 
        };
 
       
