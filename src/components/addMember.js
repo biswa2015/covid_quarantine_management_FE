@@ -47,7 +47,7 @@ class AddMemberPage extends Component {
 
       
       
-      axios.post('http://cqcmp-app8:8095/add-member', this.state)
+      axios.post('http://localhost:8102/add-member', this.state)
       //axios.post('http://localhost:8095/add-member', this.state)
       .then(response => 
         {

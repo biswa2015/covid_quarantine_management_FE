@@ -4,7 +4,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import './addRooms.css';
+import './registration.css';
+
 
 
 
@@ -45,7 +46,7 @@ class AddRoomsPage extends Component {
 
       
       
-      axios.post('http://cqcmp-app8:8095/add-room', this.state)
+      axios.post('http://localhost:8102/add-room', this.state)
       .then(response => 
         {
           if(response.status==200){

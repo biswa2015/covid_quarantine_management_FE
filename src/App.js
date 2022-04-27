@@ -35,7 +35,7 @@ const Home = () => {
     <>
       <Navbar />
       <section className="hero-section">
-        <h1>Hospital App Home Page</h1>
+        <h1>COVID QUARANATINE MANAGEMENT </h1>
       </section>
     </>
   );

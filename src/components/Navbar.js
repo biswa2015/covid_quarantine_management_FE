@@ -5,7 +5,6 @@ import "./navbar.css";
 import { NavLink } from "react-router-dom";
 
 
-
 let isLoggedIn = false;
 
 function getCookie(name) {
@@ -36,8 +35,8 @@ const Navbar = () => {
           {/* 1st logo part  */}
           <div className="logo">
             <h2>
-              <span>H</span>ospital
-              <span>A</span>pp
+              <span>C</span>ovid
+              <span>Q</span>UARANTINE
             </h2>
           </div>
   
@@ -75,6 +74,9 @@ const Navbar = () => {
                 <NavLink to="/request-consents">Request Consents</NavLink>
               </li> */}
               <li>
+                <NavLink to="/add-members">Add Member</NavLink>
+              </li>
+              <li>
                 <NavLink to="/add-rooms">Add Rooms</NavLink>
               </li>
               <li>
@@ -86,9 +88,7 @@ const Navbar = () => {
               <li>
                 <NavLink to="/deallocate-rooms">Room Deallocation</NavLink>
               </li>
-              <li>
-                <NavLink to="/add-members">Add Member</NavLink>
-              </li>
+              
             </ul>
           </div>
   
