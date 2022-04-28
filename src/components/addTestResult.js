@@ -16,35 +16,37 @@ class AddTestResultPage extends Component {
     super(props);
     this.state = {
         student_id : '',
-        result : ''
+        result : '',
+        isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
     }
     this.submitAddTestResult = this.submitAddTestResult.bind(this);
     this.detailsChange = this.detailsChange.bind(this);
+    
   }
 
 
-  // getCookie(cName) {
-  //   const name = cName + "=";
-  //   const cDecoded = decodeURIComponent(document.cookie); //to be careful
-  //   const cArr = cDecoded .split('; ');
-  //   let res;
-  //   cArr.forEach(val => {
-  //       if (val.indexOf(name) === 0) res = val.substring(name.length);
-  //   })
-  //   return res;
-  // }
+  getCookie(cName) {
+    const name = cName + "=";
+    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+    const cArr = cDecoded .split('; ');
+    let res;
+    cArr.forEach(val => {
+        if (val.indexOf(name) === 0) res = val.substring(name.length);
+    })
+    return res;
+  }
 
   submitAddTestResult(event){
       console.log(this.state);
       event.preventDefault();
-      // const token = this.getCookie('admin_cookie');
-      // const headers = { 
-      //     'Authorization': `Bearer ${token}` 
-      // };
+      const token = this.getCookie('admin_cookie');
+      const headers = { 
+          'Authorization': `Bearer ${token}` 
+      };
 
       
       
-      axios.post('http://localhost:8095/add-test', this.state)
+      axios.post('http://localhost:8095/add-test', this.state,{headers})
       .then(response => 
         {
           if(response.status==200){
@@ -73,7 +75,7 @@ class AddTestResultPage extends Component {
 
   render(){
 
-    //if(!this.state.isLoggedIn){
+    if(this.state.isloggedin){
       return (
         <div className="AddTestResultPage">
           <h1>Add Test Result</h1>
@@ -85,7 +87,7 @@ class AddTestResultPage extends Component {
                 value={this.state.student_id}
                 name = "student_id"
                 onChange={this.detailsChange}
-                placeholder = "123"
+                placeholder = "Enter student ID"
               />
             </Form.Group>
             <Form.Group size="lg" className="mb-3" controlId="formBasicResult">
@@ -94,7 +96,7 @@ class AddTestResultPage extends Component {
                 required type="text"
                 value={this.state.result}
                 onChange={this.detailsChange}
-                placeholder="+VE/-VE"
+                placeholder="Enter +VE / -VE / Pending"
                 name="result"
               />
             </Form.Group>
@@ -106,10 +108,10 @@ class AddTestResultPage extends Component {
         </div>
        
       );
-    // }
-    // else{
-    //   return <Redirect to = {{ pathname: "/" }} />;
-    // }
+     }
+    else{
+      return <Redirect to = {{ pathname: "/" }} />;
+    }
 
   }
 }

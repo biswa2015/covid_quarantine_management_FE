@@ -7,8 +7,6 @@ import { Redirect } from 'react-router';
 import './registration.css';
 
 
-
-
 class AddMemberPage extends Component {
 
 
@@ -18,7 +16,8 @@ class AddMemberPage extends Component {
         sName : '',
         sEmail : '',
         sRoll : '',
-        sContact : ''
+        sContact : '',
+        isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
 
     }
     this.submitAddMember = this.submitAddMember.bind(this);
@@ -26,33 +25,32 @@ class AddMemberPage extends Component {
   }
 
 
-  // getCookie(cName) {
-  //   const name = cName + "=";
-  //   const cDecoded = decodeURIComponent(document.cookie); //to be careful
-  //   const cArr = cDecoded .split('; ');
-  //   let res;
-  //   cArr.forEach(val => {
-  //       if (val.indexOf(name) === 0) res = val.substring(name.length);
-  //   })
-  //   return res;
-  // }
+  getCookie(cName) {
+    const name = cName + "=";
+    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+    const cArr = cDecoded .split('; ');
+    let res;
+    cArr.forEach(val => {
+        if (val.indexOf(name) === 0) res = val.substring(name.length);
+    })
+    return res;
+  }
 
   submitAddMember(event){
       console.log(this.state);
       event.preventDefault();
-      // const token = this.getCookie('admin_cookie');
-      // const headers = { 
-      //     'Authorization': `Bearer ${token}` 
-      // };
-
+      const token = this.getCookie('admin_cookie');
+      const headers = { 
+          'Authorization': `Bearer ${token}` 
+      };
+  
       
-      
-      axios.post('http://localhost:8102/add-member', this.state)
-      //axios.post('http://localhost:8095/add-member', this.state)
+      //axios.post('http://localhost:8102/add-member', this.state)
+      axios.post('http://localhost:8095/add-member', this.state,{headers})
       .then(response => 
         {
           if(response.status==200){
-            alert("Result Added!");
+            alert("Student Added!");
           }
           else{
             alert("Result not added.Please Try Again");
@@ -77,7 +75,8 @@ class AddMemberPage extends Component {
 
   render(){
 
-    //if(!this.state.isLoggedIn){
+    
+    if(this.state.isloggedin){
       return (
         <div className="AddMemberPage">
           <h1>Add Member</h1>
@@ -134,10 +133,10 @@ class AddMemberPage extends Component {
         </div>
        
       );
-    // }
-    // else{
-    //   return <Redirect to = {{ pathname: "/" }} />;
-    // }
+    }
+    else{
+      return <Redirect to = {{ pathname: "/" }} />;
+    }
 
   }
 }

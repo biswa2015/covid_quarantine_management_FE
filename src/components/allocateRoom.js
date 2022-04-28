@@ -5,6 +5,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { withRouter } from "react-router";
+import { Redirect } from 'react-router';
 //import { Redirect } from 'react-router';
 
 
@@ -14,7 +15,9 @@ class AllocateRoomsPage extends Component{
         super(props);
         this.state = {
             student_id : '',
-            room_id : this.props.match.params.room_id
+            res_data : {},
+            room_id : this.props.match.params.room_id,
+            isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
         }
         this.submitAllocateRooms = this.submitAllocateRooms.bind(this);
         this.detailsChange = this.detailsChange.bind(this);
@@ -26,34 +29,40 @@ class AllocateRoomsPage extends Component{
         history: PropTypes.object.isRequired
     };
 
-    // getCookie(cName) {
-    //     const name = cName + "=";
-    //     const cDecoded = decodeURIComponent(document.cookie); //to be careful
-    //     const cArr = cDecoded .split('; ');
-    //     let res;
-    //     cArr.forEach(val => {
-    //         if (val.indexOf(name) === 0) res = val.substring(name.length);
-    //     })
-    //     return res;
-    //   }
+    getCookie(cName) {
+        const name = cName + "=";
+        const cDecoded = decodeURIComponent(document.cookie); //to be careful
+        const cArr = cDecoded .split('; ');
+        let res;
+        cArr.forEach(val => {
+            if (val.indexOf(name) === 0) res = val.substring(name.length);
+        })
+        return res;
+      }
 
     submitAllocateRooms(event){
       console.log(this.state);
       event.preventDefault();
-    //   const token=this.getCookie('doctor_cookie')
-    //   const headers = {
-    //       "Authorization" : `Bearer ${token}`
-    //   };
+      const token=this.getCookie('admin_cookie')
+      const headers = {
+          "Authorization" : `Bearer ${token}`
+      };
       
-     // axios.post('http://localhost:8095/allocate-room/'+this.state.student_id+'/'+this.props.match.params.room_id)
-        axios.post('http://localhost:8095/allocate-room/', this.state)
+      //axios.post('http://localhost:8095/allocate-room/'+this.state.student_id+'/'+this.props.match.params.room_id, {headers})
+        axios.post('http://localhost:8095/allocate-room/', this.state, {headers})
        .then(response => 
          {
             if(response.status==200){
                 alert("Room Allocated!");
               }
-              else{
-                alert("Room not allocated.Please Try Again");
+              else if(response.status==500){
+                alert("Student has already been allocated");
+                // this.setState({
+                //     res_data: response.data,
+                // })
+                 //alert(response.data);
+                 console.log("Already allocated");
+                 console.log(response.data);
               }
          }
       );
@@ -67,6 +76,8 @@ class AllocateRoomsPage extends Component{
 
 
     render(){
+        if(this.state.isloggedin)
+        {
         const {match,location,history} = this.props;
         return (
         
@@ -86,6 +97,10 @@ class AllocateRoomsPage extends Component{
             </div>
               
         );
+        }
+        else{
+            return <Redirect to = {{ pathname: "/" }} />;
+          }
     }
 
 }

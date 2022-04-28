@@ -13,8 +13,8 @@ class AdminLoginPage extends Component {
   constructor(props){
     super(props);
     this.state = {
-        admin_email : '',
-        admin_password : '',
+        email : '',
+        password : '',
         isLoggedIn: false
     }
     this.submitAdminLogin = this.submitAdminLogin.bind(this);
@@ -33,7 +33,7 @@ class AdminLoginPage extends Component {
     };
     
     
-    axios.post('http://localhost:8102/admin-login', this.state, { headers })
+    axios.post('http://localhost:8095/login-admin', this.state, { headers })
     .then(response => 
       {
         if(response.status!=200){
@@ -47,6 +47,7 @@ class AdminLoginPage extends Component {
           console.log("Cookie set");
           alert("Admin Login Successful!");
           //console.log(this.getCookie('admin_cookie'));
+          
         }
       }
     );
@@ -79,9 +80,9 @@ class AdminLoginPage extends Component {
                 autoFocus
                 type="text"
                 value={this.state.admin_email}
-                name = "admin_email"
+                name = "email"
                 onChange={this.detailsChange}
-                placeholder = "Email"
+                placeholder = "email"
               />
             </Form.Group>
             <Form.Group size="lg" className="form" controlId="formBasicAdminPassword">
@@ -91,8 +92,8 @@ class AdminLoginPage extends Component {
                 type="password"
                 value={this.state.admin_password}
                 onChange={this.detailsChange}
-                placeholder="Password"
-                name="admin_password"
+                placeholder="password"
+                name="password"
               />
             </Form.Group>
             <Button size="lg" type="submit">

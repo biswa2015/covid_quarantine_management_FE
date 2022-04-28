@@ -7,17 +7,15 @@ import { Redirect } from 'react-router';
 import './registration.css';
 
 
-
-
-
 class AddRoomsPage extends Component {
 
 
   constructor(props){
     super(props);
     this.state = {
-        roomNum : 0,
-         floorNum : 0
+        roomNum : null,
+         floorNum : null,
+         isloggedin : this.getCookie('admin_cookie')!=undefined ? true : false
     }
     this.submitAddRooms = this.submitAddRooms.bind(this);
     this.detailsChange = this.detailsChange.bind(this);
@@ -47,7 +45,8 @@ class AddRoomsPage extends Component {
 
       
       
-      axios.post('http://localhost:8102/add-room', this.state)
+      // axios.post('http://localhost:8102/add-room', this.state)
+      axios.post('http://localhost:8095/add-room', this.state, {headers})
       .then(response => 
         {
           if(response.status==200){
@@ -76,7 +75,7 @@ class AddRoomsPage extends Component {
 
   render(){
 
-    //if(!this.state.isLoggedIn){
+    //if(this.state.isloggedin){
       return (
         <div className="AddRoomsPage">
           <h1>Add Rooms</h1>
@@ -88,7 +87,7 @@ class AddRoomsPage extends Component {
                 value={this.state.roomNum}
                 name = "roomNum"
                 onChange={this.detailsChange}
-                placeholder = "123"
+                placeholder = "enter room number"
               />
             </Form.Group>
             <Form.Group size="lg" className="mb-3" controlId="formBasicFloorNumber">
@@ -97,7 +96,7 @@ class AddRoomsPage extends Component {
                 required type="Number"
                 value={this.state.floorNum}
                 onChange={this.detailsChange}
-                placeholder="7"
+                placeholder="enter floor number"
                 name="floorNum"
               />
             </Form.Group>

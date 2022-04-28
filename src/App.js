@@ -1,4 +1,5 @@
-import React from "react";
+//import React from "react";
+import React, { useState,useEffect,useRef } from "react";
 import Navbar from "./components/Navbar";
 import { Switch, Route } from "react-router-dom";
 import { Redirect } from 'react-router';
@@ -9,6 +10,7 @@ import FreeRoomsPage from './components/freeRoom';
 import AllocateRoomsPage from './components/allocateRoom';
 import DeallocateRoomsPage from './components/deallocateRoom';
 import AddMemberPage from "./components/addMember";
+import GetPositiveStudPage from "./components/getpositivestud"
 
 let isLoggedIn = false;
 
@@ -18,14 +20,7 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-let cookie = getCookie("admin_cookie"); 
-if(cookie!=null){
-  isLoggedIn = true;
-  //alert("cookie there");
-}
-else{
-  isLoggedIn = false;
-}
+
 
 
 
@@ -120,6 +115,17 @@ const AddNewMembers = () => {
   );
 };
 
+const PositiveStudents = () => {
+  return (
+    <>
+      <Navbar />
+      <section className="hero-section">
+        <GetPositiveStudPage/>
+      </section>
+    </>
+  );
+};
+
 
 const AdminLogout= () => {
   document.cookie = "admin_cookie" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -130,6 +136,64 @@ const AdminLogout= () => {
 
 
 const App = () => {
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  let cookie;
+
+  const [adminLoginStatus,setAdminLoginStatus] = useState(false);
+  
+  const [isLoggedIn,setLoggedInStatus] = useState(false);
+
+  const [showMediaIcons, setShowMediaIcons] = useState(false);
+
+
+  //useEffect is called during loading component,on changes to component and on leaving(unmounting) a component
+
+  const isInitialMount = useRef(true);
+  //Restricting useEffect to run only on updates except initial mount
+  useEffect(() => {
+    
+    if (isInitialMount.current) {
+      //findCookie();
+
+      cookie = getCookie("admin_cookie");
+      if(cookie==null){
+        setAdminLoginStatus(false);
+        
+      } 
+      else{
+        setAdminLoginStatus(true);
+      }
+
+      isInitialMount.current = false;
+    } else {
+      // Your useEffect code here to be run on update
+      //findCookie();
+      cookie = getCookie("admin_cookie");
+      if(cookie==null){
+        setAdminLoginStatus(false);
+        
+      } 
+      else{
+        setAdminLoginStatus(true);
+      }
+    }
+    if(!adminLoginStatus ){
+      setLoggedInStatus(false);
+    }
+    else{
+      setLoggedInStatus(true);
+    }
+    //console.log(cookie);
+  });
+
+
+
   return (
     <Switch>
       <Route exact path="/">
@@ -139,7 +203,9 @@ const App = () => {
       <Route path="/login-admin">
         <AdminLogin />
       </Route>   
-
+      <Route path="/add-members">
+        <AddNewMembers />
+      </Route>
       <Route path="/add-rooms">
         <AddRooms />
       </Route>
@@ -155,8 +221,11 @@ const App = () => {
       <Route path="/deallocate-rooms">
         <DeallocateRooms />
       </Route>
-      <Route path="/add-members">
-        <AddNewMembers />
+      <Route path="/logout">
+        <AdminLogout/>
+      </Route>
+      <Route path="/positive-students">
+        <PositiveStudents/>
       </Route>
 
     </Switch>
