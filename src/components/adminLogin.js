@@ -36,11 +36,7 @@ class AdminLoginPage extends Component {
     axios.post('http://cqcmp:8095/login-admin', this.state, { headers })
     .then(response => 
       {
-        if(response.status!=200){
-          alert("Wrong Details! Enter the valid Details");
-          
-        }
-        else{
+        if(response.status==200){
           this.setState({isLoggedIn : true});
           //setting the cookie here
           document.cookie = "admin_cookie=" + response.data;
@@ -50,6 +46,7 @@ class AdminLoginPage extends Component {
           
         }
       }
+    )
     .catch(err=>{
       console.log(err);
       alert("Wrong Details! Enter the valid Details");
