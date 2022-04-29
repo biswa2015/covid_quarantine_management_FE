@@ -49,16 +49,19 @@ class AddRoomsPage extends Component {
       axios.post('http://localhost:8095/add-room', this.state, {headers})
       .then(response => 
         {
-          if(response.status==200){
+          console.log(response.status)
+          if(response.status===200){
             alert("Room Added!");
           }
           else{
-            alert("Room not added.Please Try Again");
+            alert("Room already exists");
           }
-          }
+        }
+        
       )
       .catch(err=>{
         console.log(err);
+        alert("Room already exists");
       });
   }
 

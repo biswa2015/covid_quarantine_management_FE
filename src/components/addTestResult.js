@@ -59,6 +59,7 @@ class AddTestResultPage extends Component {
       )
       .catch(err=>{
         console.log(err);
+        alert("Test not added.Please Try Again");
       });
   }
 

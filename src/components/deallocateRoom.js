@@ -40,7 +40,7 @@ class DeallocateRoomsPage extends Component {
     async componentDidMount(){
       const token = this.getCookie('admin_cookie');
       //const res = await axios.get('https://jsonplaceholder.typicode.com/users')
-      const res = await axios.get('http://localhost:8095/get-allocations',{
+      const res = await axios.get('http://cqcmp:8095/get-allocations',{
         headers: {
           'Authorization': `Bearer ${token}`
         }

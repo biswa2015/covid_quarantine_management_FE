@@ -33,7 +33,7 @@ class AdminLoginPage extends Component {
     };
     
     
-    axios.post('http://localhost:8095/login-admin', this.state, { headers })
+    axios.post('http://cqcmp:8095/login-admin', this.state, { headers })
     .then(response => 
       {
         if(response.status!=200){
@@ -50,7 +50,10 @@ class AdminLoginPage extends Component {
           
         }
       }
-    );
+    .catch(err=>{
+      console.log(err);
+      alert("Wrong Details! Enter the valid Details");
+    });
   }
 
   detailsChange(event){

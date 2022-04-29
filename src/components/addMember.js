@@ -59,6 +59,7 @@ class AddMemberPage extends Component {
       )
       .catch(err=>{
         console.log(err);
+        alert("Already student exists");
       });
   }
 
