@@ -51,7 +51,7 @@ class FreeRoomsPage extends Component {
     async getUsersData(){
       const token = this.getCookie('admin_cookie');
       const res = await axios.get('https://jsonplaceholder.typicode.com/users')
-       const res2 = await axios.get('http://cqcmp:8102/get-freerooms',
+       const res2 = await axios.get('http://localhost:8102/get-freerooms',
        {
         headers: {
           "Authorization" : `Bearer ${token}`

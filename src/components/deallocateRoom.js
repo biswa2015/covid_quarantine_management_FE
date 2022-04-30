@@ -40,7 +40,7 @@ class DeallocateRoomsPage extends Component {
     async componentDidMount(){
       const token = this.getCookie('admin_cookie');
       //const res = await axios.get('https://jsonplaceholder.typicode.com/users')
-      const res = await axios.get('http://cqcmp:8102/get-allocations',{
+      const res = await axios.get('http://localhost:8102/get-allocations',{
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -118,7 +118,7 @@ class DeallocateRoomsPage extends Component {
                             console.log(obj);
                               e.preventDefault();
                               this.setState({room_id:obj.room_id})
-                              axios.post('http://cqcmp:8102/deallocate-room', {room_id:obj.room_id})
+                              axios.post('http://localhost:8102/deallocate-room', {room_id:obj.room_id})
                               .then(response =>
                                 {
                                   if(response.status==200){

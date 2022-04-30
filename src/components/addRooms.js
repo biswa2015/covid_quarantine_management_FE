@@ -46,7 +46,7 @@ class AddRoomsPage extends Component {
       
       
       // axios.post('http://localhost:8102/add-room', this.state)
-      axios.post('http://localhost:8095/add-room', this.state, {headers})
+      axios.post('http://localhost:8102/add-room', this.state, {headers})
       .then(response => 
         {
           console.log(response.status)

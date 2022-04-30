@@ -12,7 +12,7 @@ pipeline {
                 echo 'Project is cloned successfully'
             }
         }
-        /*stage('Build'){
+        stage('Build'){
             steps {
                 sh 'npm install'
                 echo 'npm build completed'
@@ -23,7 +23,7 @@ pipeline {
                 sh 'npm test'
                 echo 'Testing completed'
             }
-        }*/
+        }
         stage('Build image'){
              steps {
                 echo 'creating docker  image'

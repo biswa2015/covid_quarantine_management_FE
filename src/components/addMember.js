@@ -46,7 +46,7 @@ class AddMemberPage extends Component {
   
       
       //axios.post('http://localhost:8102/add-member', this.state)
-      axios.post('http://localhost:8095/add-member', this.state,{headers})
+      axios.post('http://localhost:8102/add-member', this.state,{headers})
       .then(response => 
         {
           if(response.status==200){
