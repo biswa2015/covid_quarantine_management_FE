@@ -18,12 +18,12 @@ pipeline {
                 echo 'npm build completed'
             }
         }
-        stage('Test'){
-            steps {
-                sh 'npm test'
-                echo 'Testing completed'
-            }
-        }
+        // stage('Test'){
+        //     steps {
+        //         sh 'npm test'
+        //         echo 'Testing completed'
+        //     }
+        // }
         stage('Build image'){
              steps {
                 echo 'creating docker  image'
