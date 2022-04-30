@@ -6,7 +6,10 @@ import "react-table-6/react-table.css"
 import {Link} from "react-router-dom";
 import { Redirect } from 'react-router';
 import { NavLink } from 'react-bootstrap';
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import Button from "react-bootstrap/Button";
 import './addtable.css'
+import tinyUrl from '../url';
 
 
 class FreeRoomsPage extends Component {
@@ -17,6 +20,7 @@ class FreeRoomsPage extends Component {
         loading:true,
         viewrooms : false,
         room_id : '',
+        url:'',
         isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
       }
     }
@@ -51,7 +55,7 @@ class FreeRoomsPage extends Component {
     async getUsersData(){
       const token = this.getCookie('admin_cookie');
       const res = await axios.get('https://jsonplaceholder.typicode.com/users')
-       const res2 = await axios.get('http://localhost:8102/get-freerooms',
+       const res2 = await axios.get(this.state.url+'get-freerooms',
        {
         headers: {
           "Authorization" : `Bearer ${token}`
@@ -78,59 +82,59 @@ class FreeRoomsPage extends Component {
    }
 
 
-
     componentDidMount(){
       this.getUsersData()
+      console.log(tinyUrl());
+    this.setState({url:tinyUrl()});
     }
     render() {
-      const columns = [{  
-        Header: 'Available Room ID',  
-        accessor: 'room_id',
-       },
-       {  
-        Header: 'Available Room Numbers',  
-        accessor: 'roomNum',
-       }
-       
-       ,{  
-        Header: 'Available Floor Numbers',  
-        accessor: 'floorNum',
-       }
-       ,{
-        Header: 'Allocate',  
-      accessor: 'room_id',
-     Cell: ({ original }) => (
-      <button
-        type="button"
-        onClick={(e) => {
-        console.log(original);
-          e.preventDefault();
-          //window.location.href='http://localhost:8081/get-ehr/'+original.patient_id+'/'+original.consent_id;
-          this.setState({room_id:original.room_id})
-          this.getData(original.room_id)  ;
-        }}
-      >
-        Allocate room
-      </button>)
-        // <td>
-        // <NavLink to={"/view-ehr/"+original.patient_id+'/'+original.consent_id}> View Record </NavLink>
-        // </td>
-      }
-        
-        
-    ]
+
     if(this.state.isloggedin)
     {
     if(!this.state.viewrooms){
-      return (
-        <div style={{marginTop:"200px"}}>
-          <ReactTable  
-          data={this.state.users}  
-          columns={columns}  
-          />
-        </div>
-
-      )      
+          return (
+            <MDBTable striped style={{"width":"80vw","fontSize":"1.4rem"}}>
+            <MDBTableHead>
+              <tr>
+                <th>Available Room ID</th>
+                <th>Available Room Numbers</th>
+                <th>Available Floor Numbers</th>
+                <th>Allocate</th>
+              </tr>
+            </MDBTableHead>
+            <MDBTableBody>
+              {
+                this.state.users.map((obj)=>(
+                 <tr>
+                    <td>{obj.room_id}</td>
+                    <td>{obj.roomNum}</td>
+                    <td>{obj.floorNum}</td>
+                    <td>
+                      <Button className = "buttonsize" size="lg" type="button"
+                          onClick={(e) => {
+  
+                              e.preventDefault();
+                              this.setState({room_id:obj.room_id})
+                              this.getData(obj.room_id)  ;
+                              
+                          }}
+                      >
+                          Allocate Room
+                      </Button>
+                    
+                    </td>
+                    
+  
+                </tr>   		
+                
+                
+                ))
+              }
+      
+            </MDBTableBody>
+          </MDBTable>
+          )
+     
     }
     else{
       

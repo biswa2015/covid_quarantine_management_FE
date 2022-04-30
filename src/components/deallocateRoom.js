@@ -9,6 +9,7 @@ import { Redirect } from 'react-router';
 import { NavLink } from 'react-bootstrap';
 import Button from "react-bootstrap/Button";
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import tinyUrl from '../url';
 import './addtable.css'
 
 class DeallocateRoomsPage extends Component {
@@ -17,13 +18,16 @@ class DeallocateRoomsPage extends Component {
       this.state = {
         users: [],
         loading:true,
-        getEhrResp : false,
+        //getEhrResp : false,
         pid : '',
         cid : '',
+        url:'',
         Vehr : false,
         isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false,
-        room_id : ''
+        room_id : '',
+        viewrooms:false
       }
+      this.call = this.call.bind(this);
     }
 
     getCookie(cName) {
@@ -37,35 +41,48 @@ class DeallocateRoomsPage extends Component {
       return res;
     }
 
+
     async componentDidMount(){
       const token = this.getCookie('admin_cookie');
+      console.log(tinyUrl());
+      await this.setState({url:tinyUrl()});
       //const res = await axios.get('https://jsonplaceholder.typicode.com/users')
-      const res = await axios.get('http://localhost:8102/get-allocations',{
+      console.log(this.state.url);
+      const res = await axios.get(this.state.url+'get-allocations',{
         headers: {
           'Authorization': `Bearer ${token}`
         }
       })
       //console.log(res.data.delegateAccess.toLowerCase())
       console.log(res.data);
+     
 
-
-      this.setState({loading:false, users: res.data})
+      await this.setState({loading:false, users: res.data})
       console.log(this.state.users);
     }
 
-    async getData(room_id){
+    async call(obj){
+      const token = this.getCookie('admin_cookie');
       //const res = await axios.get('https://jsonplaceholder.typicode.com/users')
-        //console.log(pid+" "+cid)
-      // const res = await axios.get('http://localhost:8081/get-ehr/'+pid+'/'+cid,{  
-      //   headers: {
-      //       'Authorization': 'doc_123'
-      //   }
-      // })
-    // this.setState({getEhrResp:true});
-     
-      //console.log(res);
-
+       const res2 = await axios.post(this.state.url+'deallocate-room',obj,
+       {
+        headers: {
+          "Authorization" : `Bearer ${token}`
+        }
+      }
+       //this.componentDidMount(); 
+      )
+      .then(response=>{
+        this.componentDidMount(); 
+      })
+    //   const headers = {
+    //     "Authorization" : `Bearer ${token}`
+    // };
+    this.componentDidMount();
+       console.log(res2.data)
+      this.setState({loading:false, users: res2.data})
     }
+
 
 
 
@@ -73,7 +90,7 @@ class DeallocateRoomsPage extends Component {
     render() {
 
     if(this.state.isloggedin){
-      if(!this.state.getEhrResp){
+      if(!this.state.viewrooms && this.state.users!==undefined){
         return (
           <MDBTable striped style={{"width":"80vw","fontSize":"1.4rem"}}>
           <MDBTableHead>
@@ -88,29 +105,15 @@ class DeallocateRoomsPage extends Component {
             </tr>
           </MDBTableHead>
           <MDBTableBody>
+            
             {
+              
               this.state.users.map((obj)=>(
                <tr>
                   <td>{obj.alloc_id}</td>
                   <td>{obj.student_id}</td>
                   <td>{obj.room_id}</td>
-                  {/* <td>{obj.startDate}</td>
-                  <td>{obj.endDate}</td>
-                  <td>{obj.vacated}</td> */}
-                  {/* <td>
-                    <Button className = "buttonsize" size="lg" type="button"
-                        onClick={(e) => {
-
-                            e.preventDefault();
-                            this.setState({pid:obj.patient_id,cid:obj.consent_id})
-                            this.getData(obj.patient_id,obj.consent_id)  ;
-                            this.setState({Vehr:true});
-                        }}
-                    >
-                        View Record
-                    </Button>
-                 
-                  </td> */}
+           
                   {obj.vacated===0 ?  (
                     <td>
                       <Button className = "buttonsize" size="lg" type="button"
@@ -118,7 +121,8 @@ class DeallocateRoomsPage extends Component {
                             console.log(obj);
                               e.preventDefault();
                               this.setState({room_id:obj.room_id})
-                              axios.post('http://localhost:8102/deallocate-room', {room_id:obj.room_id})
+                              this.call(obj)
+                              /* axios.post(this.state.url+'deallocate-room', {room_id:obj.room_id})
                               .then(response =>
                                 {
                                   if(response.status==200){
@@ -128,7 +132,7 @@ class DeallocateRoomsPage extends Component {
                                     alert("Please Try Again");
                                   }
                                   }
-                              )
+                              ) */
                               //this.getData(obj.room_ID)  ;
 
                           }}

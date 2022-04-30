@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from 'axios';
 import { Redirect } from 'react-router';
-
+import tinyUrl from '../url';
 
 
 class AdminLoginPage extends Component {
@@ -15,14 +15,19 @@ class AdminLoginPage extends Component {
     this.state = {
         email : '',
         password : '',
+        url:'',
         isLoggedIn: false
     }
     this.submitAdminLogin = this.submitAdminLogin.bind(this);
     this.detailsChange = this.detailsChange.bind(this);
+    
   }
 
-
-
+componentDidMount(){
+  console.log(tinyUrl());
+  this.setState({url:tinyUrl()});
+}
+  //url = tinyUrl();
   submitAdminLogin(event){
     //console.log(this.state);
     event.preventDefault();
@@ -33,7 +38,8 @@ class AdminLoginPage extends Component {
     };
     
     
-    axios.post('http://localhost:8102/login-admin', this.state, { headers })
+    //axios.post('http://localhost:8102/login-admin', this.state, { headers })
+    axios.post(this.state.url+'login-admin', this.state, { headers })
     .then(response => 
       {
         if(response.status==200){

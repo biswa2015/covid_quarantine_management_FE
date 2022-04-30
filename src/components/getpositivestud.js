@@ -7,6 +7,9 @@ import {Link} from "react-router-dom";
 import { Redirect } from 'react-router';
 import { NavLink } from 'react-bootstrap';
 import './addtable.css'
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import Button from "react-bootstrap/Button";
+import tinyUrl from '../url';
 
 
 class GetPositiveStudPage extends Component {
@@ -17,6 +20,7 @@ class GetPositiveStudPage extends Component {
         loading:true,
         viewrooms : false,
         room_id : '',
+        url:'',
         isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
       }
     }
@@ -35,7 +39,7 @@ class GetPositiveStudPage extends Component {
     async getUsersData(){
       const token = this.getCookie('admin_cookie');
       const res = await axios.get('https://jsonplaceholder.typicode.com/users')
-       const res2 = await axios.get('http://localhost:8102/get-positiveStudents',
+       const res2 = await axios.get(this.state.url+'get-positiveStudents',
        {
         headers: {
           "Authorization" : `Bearer ${token}`
@@ -65,21 +69,71 @@ class GetPositiveStudPage extends Component {
 
     componentDidMount(){
       this.getUsersData()
+      console.log(tinyUrl());
+    this.setState({url:tinyUrl()});
     }
     render() {
-      const columns = [{  
-        Header: 'Student ID',  
-        accessor: 'student_id',
-       }
-       ,{  
-        Header: 'Result',  
-        accessor: 'result',
-       }
+      if(this.state.isloggedin)
+    {
+    if(!this.state.viewrooms){
+          return (
+            <MDBTable striped style={{"width":"80vw","fontSize":"1.4rem"}}>
+            <MDBTableHead>
+              <tr>
+                <th>Student ID</th>
+                <th>Result</th>
+                <th>Test Date</th>
+                {/* <th>Allocate</th> */}
+              </tr>
+            </MDBTableHead>
+            <MDBTableBody>
+              {
+                this.state.users.map((obj)=>(
+                 <tr>
+                    <td>{obj.student_id}</td>
+                    <td>{obj.result}</td>
+                    <td>{obj.testDate}</td>
+                    {/* <td>
+                      <Button className = "buttonsize" size="lg" type="button"
+                          onClick={(e) => {
+  
+                              e.preventDefault();
+                              this.setState({room_id:obj.room_id})
+                              this.getData(obj.room_id)  ;
+                              
+                          }}
+                      >
+                          Allocate Room
+                      </Button>
+                    
+                    </td> */}
+                    
+  
+                </tr>   		
+                
+                
+                ))
+              }
+      
+            </MDBTableBody>
+          </MDBTable>
+          )
+            }
+          }
+      // const columns = [{  
+      //   Header: 'Student ID',  
+      //   accessor: 'student_id',
+      //  }
+      //  ,{  
+      //   Header: 'Result',  
+      //   accessor: 'result',
+      //  }
        
-       ,{  
-        Header: 'Test Date',  
-        accessor: 'testDate',
-       }
+      //  ,{  
+      //   Header: 'Test Date',  
+      //   accessor: 'testDate',
+      //  }
+
     //     ,{
     //       Header: 'Allocate',  
     //     accessor: 'room_id',
@@ -102,26 +156,6 @@ class GetPositiveStudPage extends Component {
     //     }
         
         
-    ]
-    if(this.state.isloggedin)
-    {
-    // if(!this.state.viewrooms){
-      return (
-        <div style={{marginTop:"200px"}}>
-          <ReactTable  
-          data={this.state.users}  
-          columns={columns}  
-          />
-        </div>
-
-      )      
-    //}
-    // else{
-      
-    //   return <Redirect to = {{ pathname: "/allocate-room/" + this.state.room_id }} />;
-      
-    // }
-  }
   else
   {
     return <Redirect to = {{ pathname: "/" }} />;

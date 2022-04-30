@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef, useLayoutEffect } from "react";
 import "./navbar.css";
 
 
 import { NavLink } from "react-router-dom";
-
-
+ 
 let isLoggedIn = false;
 
 function getCookie(name) {
@@ -13,28 +12,30 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-
-
-
-let cookie;
 const Navbar = () => {
 
+
   
+  
+  
+  
+  let cookie;
+
   const [showMediaIcons, setShowMediaIcons] = useState(false);
-
   
-  useEffect(() => {
-    console.log("Inside Navbar")
-    cookie = getCookie("admin_cookie"); 
-    if(cookie!=null){
-      isLoggedIn = true;
-      //alert("cookie there");
-    }
-    else{
-      isLoggedIn = false;
-    }    
-  });
+  useEffect(() =>{
 
+    
+      const cookie = getCookie("admin_cookie");
+      if(cookie!=undefined){
+        isLoggedIn = true;
+      }
+      else{
+        isLoggedIn = false;
+      }
+    
+       
+  });
   
 
   console.log(isLoggedIn);
@@ -59,30 +60,7 @@ const Navbar = () => {
               <li>
                 <NavLink to="/">Home</NavLink>
               </li>
-              {/* <li>
-                <NavLink to="/login-doctor">Doctor Login</NavLink>
-              </li>
-              <li>
-                <NavLink to="/login-admin">Admin Login</NavLink>
-              </li>
-              <li>
-                <NavLink to="/add-doctor">Add Doctor</NavLink>
-              </li>
-              <li>
-                <NavLink to="/register-doctor">Register Doctor</NavLink>
-              </li>
-              <li>
-                <NavLink to="/logout">Doctor Logout</NavLink>
-              </li>
-              <li>
-                <NavLink to="/logout-admin">Admin Logout</NavLink>
-              </li>
-              <li>
-                <NavLink to="/granted-consents">Granted Consents</NavLink>
-              </li>
-              <li>
-                <NavLink to="/request-consents">Request Consents</NavLink>
-              </li> */}
+
               <li>
                 <NavLink to="/add-members">Add Member</NavLink>
               </li>
@@ -125,6 +103,8 @@ const Navbar = () => {
     } 
     console.log("Inside else case");
     console.log(cookie);
+    //setShowMediaIcons(true);
+
     return (
       <>
         <nav className="main-nav">
@@ -142,33 +122,7 @@ const Navbar = () => {
               showMediaIcons ? "menu-link mobile-menu-link" : "menu-link"
             }>
             <ul>
-              {/* <li>
-                <NavLink to="/">Home</NavLink>
-              </li> */}
-              {/* <li>
-                <NavLink to="/login-doctor">Doctor Login</NavLink>
-              </li>
-              <li>
-                <NavLink to="/login-admin">Admin Login</NavLink>
-              </li>
-              <li>
-                <NavLink to="/add-doctor">Add Doctor</NavLink>
-              </li>
-              <li>
-                <NavLink to="/register-doctor">Register Doctor</NavLink>
-              </li>
-              <li>
-                <NavLink to="/logout">Doctor Logout</NavLink>
-              </li>
-              <li>
-                <NavLink to="/logout-admin">Admin Logout</NavLink>
-              </li>
-              <li>
-                <NavLink to="/granted-consents">Granted Consents</NavLink>
-              </li>
-              <li>
-                <NavLink to="/request-consents">Request Consents</NavLink>
-              </li> */}
+
               <li>
                 <NavLink to="/login-admin">Admin Login</NavLink>
               </li>

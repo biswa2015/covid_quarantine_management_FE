@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import './registration.css';
+import tinyUrl from '../url';
 
 
 class AddMemberPage extends Component {
@@ -16,6 +17,7 @@ class AddMemberPage extends Component {
         sName : '',
         sEmail : '',
         sRoll : '',
+        url:'',
         sContact : '',
         isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
 
@@ -24,6 +26,10 @@ class AddMemberPage extends Component {
     this.detailsChange = this.detailsChange.bind(this);
   }
 
+  componentDidMount(){
+    console.log(tinyUrl());
+    this.setState({url:tinyUrl()});
+  }
 
   getCookie(cName) {
     const name = cName + "=";
@@ -46,7 +52,7 @@ class AddMemberPage extends Component {
   
       
       //axios.post('http://localhost:8102/add-member', this.state)
-      axios.post('http://localhost:8102/add-member', this.state,{headers})
+      axios.post(this.state.url+'add-member', this.state,{headers})
       .then(response => 
         {
           if(response.status==200){

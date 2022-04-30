@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { withRouter } from "react-router";
 import { Redirect } from 'react-router';
+import tinyUrl from '../url';
 //import { Redirect } from 'react-router';
 
 
@@ -16,6 +17,7 @@ class AllocateRoomsPage extends Component{
         this.state = {
             student_id : '',
             res_data : {},
+            url:'',
             room_id : this.props.match.params.room_id,
             isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
         }
@@ -40,6 +42,11 @@ class AllocateRoomsPage extends Component{
         return res;
       }
 
+      componentDidMount(){
+        console.log(tinyUrl());
+        this.setState({url:tinyUrl()});
+      }
+
     submitAllocateRooms(event){
       console.log(this.state);
       event.preventDefault();
@@ -49,7 +56,7 @@ class AllocateRoomsPage extends Component{
       };
       
       //axios.post('http://localhost:8095/allocate-room/'+this.state.student_id+'/'+this.props.match.params.room_id, {headers})
-        axios.post('http://localhost:8102/allocate-room/', this.state, {headers})
+        axios.post(this.state.url+'allocate-room/', this.state, {headers})
        .then(response => 
          {
             if(response.status==200){

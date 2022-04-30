@@ -5,8 +5,7 @@ import Button from "react-bootstrap/Button";
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import './addRooms.css';
-
-
+import tinyUrl from '../url';
 
 
 class AddTestResultPage extends Component {
@@ -17,6 +16,7 @@ class AddTestResultPage extends Component {
     this.state = {
         student_id : '',
         result : '',
+        url:'',
         isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
     }
     this.submitAddTestResult = this.submitAddTestResult.bind(this);
@@ -36,6 +36,10 @@ class AddTestResultPage extends Component {
     return res;
   }
 
+  componentDidMount(){
+    console.log(tinyUrl());
+    this.setState({url:tinyUrl()});
+  }
   submitAddTestResult(event){
       console.log(this.state);
       event.preventDefault();
@@ -46,7 +50,7 @@ class AddTestResultPage extends Component {
 
       
       
-      axios.post('http://localhost:8102/add-test', this.state,{headers})
+      axios.post(this.state.url+'add-test', this.state,{headers})
       .then(response => 
         {
           if(response.status==200){
