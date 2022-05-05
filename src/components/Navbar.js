@@ -27,6 +27,7 @@ const Navbar = () => {
 
     
       const cookie = getCookie("admin_cookie");
+      console.log('test'+isLoggedIn)
       if(cookie!=undefined){
         isLoggedIn = true;
       }

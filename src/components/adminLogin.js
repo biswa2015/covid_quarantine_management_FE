@@ -43,9 +43,9 @@ componentDidMount(){
     .then(response => 
       {
         if(response.status==200){
-          this.setState({isLoggedIn : true});
           //setting the cookie here
           document.cookie = "admin_cookie=" + response.data;
+          this.setState({isLoggedIn : true});
           console.log("Cookie set");
           alert("Admin Login Successful!");
           //console.log(this.getCookie('admin_cookie'));
