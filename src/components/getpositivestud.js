@@ -72,6 +72,38 @@ class GetPositiveStudPage extends Component {
       console.log(tinyUrl());
     this.setState({url:tinyUrl()});
     }
+
+    async call(obj){
+      const token = this.getCookie('admin_cookie');
+      //const res = await axios.get('https://jsonplaceholder.typicode.com/users')
+       const res2 = await axios.post(this.state.url+'send-Email',obj,
+       {
+        headers: {
+          "Authorization" : `Bearer ${token}`
+        }
+      }
+       //this.componentDidMount(); 
+      )
+      .then(response=>{
+        if(response.status===200){
+          alert("Email sent!");
+        }
+         this.componentDidMount(); 
+      })
+    //   const headers = {
+    //     "Authorization" : `Bearer ${token}`
+    // };
+    .catch(err=>{
+      console.log(err);
+      alert("Email not sent");
+    });
+
+    this.componentDidMount();
+       console.log(res2.data)
+      this.setState({loading:false, users: res2.data})
+    }
+
+
     render() {
       if(this.state.isloggedin)
     {
@@ -93,20 +125,20 @@ class GetPositiveStudPage extends Component {
                     <td>{obj.student_id}</td>
                     <td>{obj.result}</td>
                     <td>{obj.testDate}</td>
-                    {/* <td>
+                    { <td>
                       <Button className = "buttonsize" size="lg" type="button"
                           onClick={(e) => {
   
                               e.preventDefault();
-                              this.setState({room_id:obj.room_id})
-                              this.getData(obj.room_id)  ;
+                              this.setState({student_id:obj.student_id})
+                              this.call(obj)  ;
                               
                           }}
                       >
-                          Allocate Room
+                          Send Email
                       </Button>
                     
-                    </td> */}
+                    </td> }
                     
   
                 </tr>   		
