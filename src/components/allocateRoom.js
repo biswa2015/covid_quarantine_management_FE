@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { withRouter } from "react-router";
 import { Redirect } from 'react-router';
 import tinyUrl from '../url';
+import chatIcon from "./IIITB_logo.png";
 //import { Redirect } from 'react-router';
 
 
@@ -93,6 +94,9 @@ class AllocateRoomsPage extends Component{
         return (
         
             <div className="AllocateRooms">
+              <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
                 <h1>ALLOCATE ROOMS</h1>
                 <Form onSubmit = {this.submitAllocateRooms}>
                     <Form.Group className="mb-3" controlId="formBasicstudentID">

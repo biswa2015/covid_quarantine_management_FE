@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router';
 import './addRooms.css';
 import tinyUrl from '../url';
+import chatIcon from "./IIITB_logo.png";
 
 
 class AddTestResultPage extends Component {
@@ -83,6 +84,9 @@ class AddTestResultPage extends Component {
     if(this.state.isloggedin){
       return (
         <div className="AddTestResultPage">
+          <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
           <h1>Add Test Result</h1>
           <Form onSubmit={this.submitAddTestResult}>
             <Form.Group size="lg" className="mb-3" controlId="formBasicStudentId">

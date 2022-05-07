@@ -10,6 +10,7 @@ import './addtable.css'
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import Button from "react-bootstrap/Button";
 import tinyUrl from '../url';
+import chatIcon from "./IIITB_logo.png";
 
 
 class GetPositiveStudPage extends Component {
@@ -111,6 +112,9 @@ class GetPositiveStudPage extends Component {
           return (
             <MDBTable striped style={{"width":"80vw","fontSize":"1.4rem"}}>
             <MDBTableHead>
+            <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
               <tr>
                 <th>Student ID</th>
                 <th>Result</th>

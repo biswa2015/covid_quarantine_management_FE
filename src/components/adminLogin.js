@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import axios from 'axios';
 import { Redirect } from 'react-router';
 import tinyUrl from '../url';
+import chatIcon from "./IIITB_logo.png";
 
 
 class AdminLoginPage extends Component {
@@ -77,6 +78,9 @@ componentDidMount(){
     if(!this.state.isLoggedIn){
       return (
         <div className="AdminLoginPage">
+          <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
           <h1>LOGIN PAGE</h1>
           <Form onSubmit={this.submitAdminLogin}>
             <Form.Group size="lg" className="form" controlId="formBasicAdminEmail">

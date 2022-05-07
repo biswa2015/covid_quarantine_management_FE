@@ -10,6 +10,7 @@ import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import Button from "react-bootstrap/Button";
 import './addtable.css'
 import tinyUrl from '../url';
+import chatIcon from "./IIITB_logo.png";
 
 
 class FreeRoomsPage extends Component {
@@ -93,8 +94,12 @@ class FreeRoomsPage extends Component {
     {
     if(!this.state.viewrooms){
           return (
+            
             <MDBTable striped style={{"width":"80vw","fontSize":"1.4rem"}}>
             <MDBTableHead>
+            <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
               <tr>
                 <th>Available Room ID</th>
                 <th>Available Room Numbers</th>

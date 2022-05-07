@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import tinyUrl from '../url';
 import './addtable.css'
+import chatIcon from "./IIITB_logo.png";
 
 class DeallocateRoomsPage extends Component {
     constructor(props){
@@ -94,6 +95,9 @@ class DeallocateRoomsPage extends Component {
         return (
           <MDBTable striped style={{"width":"80vw","fontSize":"1.4rem"}}>
           <MDBTableHead>
+          <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
             <tr>
               <th>Allocation ID</th>
               <th>Student ID</th>

@@ -11,6 +11,8 @@ import AllocateRoomsPage from './components/allocateRoom';
 import DeallocateRoomsPage from './components/deallocateRoom';
 import AddMemberPage from "./components/addMember";
 import GetPositiveStudPage from "./components/getpositivestud"
+import chatIcon from "./components/IIITB_logo.png";
+import "./App.css";
 
 let isLoggedIn = false;
 
@@ -29,6 +31,9 @@ const Home = () => {
   return (
     <>
       <Navbar />
+      <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
       <section className="hero-section">
         <h1>COVID QUARANATINE MANAGEMENT </h1>
       </section>
