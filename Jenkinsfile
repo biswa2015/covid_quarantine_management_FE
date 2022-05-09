@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment{
-        DOCKERHUB_CREDENTIALS=credentials('dockerhub-cred-biswa')
+        imageName = ""
     }
 
     stages {
