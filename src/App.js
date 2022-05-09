@@ -1,20 +1,18 @@
-import React from "react";
+//import React from "react";
+import React, { useState,useEffect,useRef } from "react";
 import Navbar from "./components/Navbar";
 import { Switch, Route } from "react-router-dom";
-import DoctorLoginPage from './components/doctorLogin.js';
-import DoctorRegistrationPage from './components/doctorRegistration';
 import { Redirect } from 'react-router';
 import AdminLoginPage from './components/adminLogin';
-import AddDoctorPage from './components/addDoctor';
-import GrantedConsentPage from './components/grantedConsents';
-import RequestConsentPage from './components/requestConsent';
-import ViewEHR from './components/viewEHR';
 import AddRoomsPage from './components/addRooms';
 import AddTestResultPage from './components/addTestResult';
 import FreeRoomsPage from './components/freeRoom';
 import AllocateRoomsPage from './components/allocateRoom';
 import DeallocateRoomsPage from './components/deallocateRoom';
 import AddMemberPage from "./components/addMember";
+import GetPositiveStudPage from "./components/getpositivestud"
+import chatIcon from "./components/IIITB_logo.png";
+import "./App.css";
 
 let isLoggedIn = false;
 
@@ -24,14 +22,7 @@ function getCookie(name) {
   if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-let cookie = getCookie("patient_cookie"); 
-if(cookie!=null){
-  isLoggedIn = true;
-  //alert("cookie there");
-}
-else{
-  isLoggedIn = false;
-}
+
 
 
 
@@ -40,23 +31,16 @@ const Home = () => {
   return (
     <>
       <Navbar />
+      <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
       <section className="hero-section">
-        <h1>Hospital App Home Page</h1>
+        <h1>COVID QUARANATINE MANAGEMENT </h1>
       </section>
     </>
   );
 };
 
-const LoginDoctor = () => {
-  return (
-    <>
-      <Navbar />
-      <section className="hero-section">
-        <DoctorLoginPage/>
-      </section>
-    </>
-  );
-};
 
 const AdminLogin = () => {
   return (
@@ -69,51 +53,6 @@ const AdminLogin = () => {
   );
 };
 
-const AddDoctor = () => {
-  return (
-    <>
-      <Navbar />
-      <section className="hero-section">
-        <AddDoctorPage/>
-      </section>
-    </>
-  );
-};
-
-
-const DoctorRegister= () => {
-  return (
-    <>
-      <Navbar />
-      <section className="hero-section">
-        <DoctorRegistrationPage/>
-      </section>
-    </>
-  );
-};
-
-
-const GrantedConsent= () => {
-  return (
-    <>
-      <Navbar />
-      <section className="hero-section">
-        <GrantedConsentPage/>
-      </section>
-    </>
-  );
-};
-
-const RequestConsent = () => {
-  return (
-    <>
-      <Navbar />
-      <section className="hero-section">
-        <RequestConsentPage/>
-      </section>
-    </>
-  );
-};
 
 const AddTests = () => {
   return (
@@ -181,23 +120,17 @@ const AddNewMembers = () => {
   );
 };
 
-const View = () => {
+const PositiveStudents = () => {
   return (
     <>
       <Navbar />
       <section className="hero-section">
-        <ViewEHR/>
+        <GetPositiveStudPage/>
       </section>
     </>
   );
 };
 
-const Logout= () => {
-  document.cookie = "doctor_cookie" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-  
-  return <Redirect to = {{ pathname: "/login-doctor" }} />;
-  
-};
 
 const AdminLogout= () => {
   document.cookie = "admin_cookie" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
@@ -208,43 +141,75 @@ const AdminLogout= () => {
 
 
 const App = () => {
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  let cookie;
+
+  const [adminLoginStatus,setAdminLoginStatus] = useState(false);
+  
+  const [isLoggedIn,setLoggedInStatus] = useState(false);
+
+  const [showMediaIcons, setShowMediaIcons] = useState(false);
+
+
+  //useEffect is called during loading component,on changes to component and on leaving(unmounting) a component
+
+  const isInitialMount = useRef(true);
+  //Restricting useEffect to run only on updates except initial mount
+  useEffect(() => {
+    
+    if (isInitialMount.current) {
+      //findCookie();
+
+      cookie = getCookie("admin_cookie");
+      if(cookie==null){
+        setAdminLoginStatus(false);
+        
+      } 
+      else{
+        setAdminLoginStatus(true);
+      }
+
+      isInitialMount.current = false;
+    } else {
+      // Your useEffect code here to be run on update
+      //findCookie();
+      cookie = getCookie("admin_cookie");
+      if(cookie==null){
+        setAdminLoginStatus(false);
+        
+      } 
+      else{
+        setAdminLoginStatus(true);
+      }
+    }
+    if(!adminLoginStatus ){
+      setLoggedInStatus(false);
+    }
+    else{
+      setLoggedInStatus(true);
+    }
+    //console.log(cookie);
+  });
+
+
+
   return (
     <Switch>
       <Route exact path="/">
         <Home />
       </Route>
 
-      <Route path="/login-doctor">
-        <LoginDoctor />
-      </Route>
-
       <Route path="/login-admin">
         <AdminLogin />
-      </Route>
-
-      <Route path="/add-doctor">
-        <AddDoctor />
-      </Route>
-
-      <Route path="/register-doctor">
-        <DoctorRegister />
-      </Route>
-
-      <Route path="/logout">
-        <Logout />
-      </Route>
-
-      <Route path="/logout-admin">
-        <AdminLogout />
-      </Route>
-      <Route path="/granted-consents">
-        <GrantedConsent />
-      </Route>
-      <Route path="/request-consents">
-        <RequestConsent />
-      </Route>
-      <Route path="/view-ehr/:patientId/:consentId">
-        <View />
+      </Route>   
+      <Route path="/add-members">
+        <AddNewMembers />
       </Route>
       <Route path="/add-rooms">
         <AddRooms />
@@ -261,8 +226,11 @@ const App = () => {
       <Route path="/deallocate-rooms">
         <DeallocateRooms />
       </Route>
-      <Route path="/add-members">
-        <AddNewMembers />
+      <Route path="/logout">
+        <AdminLogout/>
+      </Route>
+      <Route path="/positive-students">
+        <PositiveStudents/>
       </Route>
 
     </Switch>

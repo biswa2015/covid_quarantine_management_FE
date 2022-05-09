@@ -4,9 +4,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import './doctorLogin.css';
-
-
+import tinyUrl from '../url';
+import chatIcon from "./IIITB_logo.png";
 
 
 class AdminLoginPage extends Component {
@@ -15,16 +14,21 @@ class AdminLoginPage extends Component {
   constructor(props){
     super(props);
     this.state = {
-        admin_email : '',
-        admin_password : '',
+        email : '',
+        password : '',
+        url:'',
         isLoggedIn: false
     }
     this.submitAdminLogin = this.submitAdminLogin.bind(this);
     this.detailsChange = this.detailsChange.bind(this);
+    
   }
 
-
-
+componentDidMount(){
+  console.log(tinyUrl());
+  this.setState({url:tinyUrl()});
+}
+  //url = tinyUrl();
   submitAdminLogin(event){
     //console.log(this.state);
     event.preventDefault();
@@ -35,23 +39,25 @@ class AdminLoginPage extends Component {
     };
     
     
-    axios.post('http://localhost:8082/admin-login', this.state, { headers })
+    //axios.post('http://localhost:8102/login-admin', this.state, { headers })
+    axios.post(this.state.url+'login-admin', this.state, { headers })
     .then(response => 
       {
-        if(response.status!=200){
-          alert("Wrong Details! Enter the valid Details");
-          
-        }
-        else{
-          this.setState({isLoggedIn : true});
+        if(response.status==200){
           //setting the cookie here
           document.cookie = "admin_cookie=" + response.data;
+          this.setState({isLoggedIn : true});
           console.log("Cookie set");
           alert("Admin Login Successful!");
           //console.log(this.getCookie('admin_cookie'));
+          
         }
       }
-    );
+    )
+    .catch(err=>{
+      console.log(err);
+      alert("Wrong Details! Enter the valid Details");
+    });
   }
 
   detailsChange(event){
@@ -72,6 +78,9 @@ class AdminLoginPage extends Component {
     if(!this.state.isLoggedIn){
       return (
         <div className="AdminLoginPage">
+          <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
           <h1>LOGIN PAGE</h1>
           <Form onSubmit={this.submitAdminLogin}>
             <Form.Group size="lg" className="form" controlId="formBasicAdminEmail">
@@ -81,9 +90,9 @@ class AdminLoginPage extends Component {
                 autoFocus
                 type="text"
                 value={this.state.admin_email}
-                name = "admin_email"
+                name = "email"
                 onChange={this.detailsChange}
-                placeholder = "Email"
+                placeholder = "email"
               />
             </Form.Group>
             <Form.Group size="lg" className="form" controlId="formBasicAdminPassword">
@@ -93,8 +102,8 @@ class AdminLoginPage extends Component {
                 type="password"
                 value={this.state.admin_password}
                 onChange={this.detailsChange}
-                placeholder="Password"
-                name="admin_password"
+                placeholder="password"
+                name="password"
               />
             </Form.Group>
             <Button size="lg" type="submit">

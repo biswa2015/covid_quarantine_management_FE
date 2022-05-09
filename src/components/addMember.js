@@ -4,9 +4,9 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import axios from 'axios';
 import { Redirect } from 'react-router';
-import './addRooms.css';
-
-
+import './registration.css';
+import tinyUrl from '../url';
+import chatIcon from "./IIITB_logo.png";
 
 
 class AddMemberPage extends Component {
@@ -18,40 +18,46 @@ class AddMemberPage extends Component {
         sName : '',
         sEmail : '',
         sRoll : '',
-        sContact : ''
+        url:'',
+        sContact : '',
+        isloggedin : this.getCookie('admin_cookie')!==undefined ? true : false
 
     }
     this.submitAddMember = this.submitAddMember.bind(this);
     this.detailsChange = this.detailsChange.bind(this);
   }
 
+  componentDidMount(){
+    console.log(tinyUrl());
+    this.setState({url:tinyUrl()});
+  }
 
-  // getCookie(cName) {
-  //   const name = cName + "=";
-  //   const cDecoded = decodeURIComponent(document.cookie); //to be careful
-  //   const cArr = cDecoded .split('; ');
-  //   let res;
-  //   cArr.forEach(val => {
-  //       if (val.indexOf(name) === 0) res = val.substring(name.length);
-  //   })
-  //   return res;
-  // }
+  getCookie(cName) {
+    const name = cName + "=";
+    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+    const cArr = cDecoded .split('; ');
+    let res;
+    cArr.forEach(val => {
+        if (val.indexOf(name) === 0) res = val.substring(name.length);
+    })
+    return res;
+  }
 
   submitAddMember(event){
       console.log(this.state);
       event.preventDefault();
-      // const token = this.getCookie('admin_cookie');
-      // const headers = { 
-      //     'Authorization': `Bearer ${token}` 
-      // };
-
+      const token = this.getCookie('admin_cookie');
+      const headers = { 
+          'Authorization': `Bearer ${token}` 
+      };
+  
       
-      
-      axios.post('http://localhost:8095/add-member', this.state)
+      //axios.post('http://localhost:8102/add-member', this.state)
+      axios.post(this.state.url+'add-member', this.state,{headers})
       .then(response => 
         {
           if(response.status==200){
-            alert("Result Added!");
+            alert("Student Added!");
           }
           else{
             alert("Result not added.Please Try Again");
@@ -60,6 +66,7 @@ class AddMemberPage extends Component {
       )
       .catch(err=>{
         console.log(err);
+        alert("Already student exists");
       });
   }
 
@@ -76,9 +83,14 @@ class AddMemberPage extends Component {
 
   render(){
 
-    //if(!this.state.isLoggedIn){
+    
+    if(this.state.isloggedin){
       return (
+        
         <div className="AddMemberPage">
+          <div className="chat_icon_image_wrapper IIITB_logo">
+        <img src={chatIcon} height={200} width={200} />
+      </div>
           <h1>Add Member</h1>
           <Form onSubmit={this.submitAddMember}>
             <Form.Group size="lg" className="mb-3" controlId="formBasicStudentName">
@@ -133,10 +145,10 @@ class AddMemberPage extends Component {
         </div>
        
       );
-    // }
-    // else{
-    //   return <Redirect to = {{ pathname: "/" }} />;
-    // }
+    }
+    else{
+      return <Redirect to = {{ pathname: "/" }} />;
+    }
 
   }
 }

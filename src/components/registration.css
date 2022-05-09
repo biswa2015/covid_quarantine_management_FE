@@ -8,6 +8,16 @@
     
 
 }
+
+.IIITB_logo {
+
+    display: flex;
+    grid-column: 2/3;
+    /* background-color: antiquewhite; */
+    justify-content: center;
+    align-items: center;
+  
+  }
 .form-label{
     font-size:1.2em;
 }
